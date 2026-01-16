@@ -1,7 +1,13 @@
 package br.com.eduardo.screenmatch.modelos;
 
+import br.com.eduardo.screenmatch.excecao.ErroDeConversaoDeAnoException;
+import com.google.gson.annotations.SerializedName;
+
 public class Titulo implements Comparable<Titulo> {
+    //FOI APAGADO POIS FOI IMPLEMENTADO O RECORD
+    //@SerializedName("Title") //Usado para identificar no JSON qual texto entre parentese se refere a qual na classe do java
     private String nome;
+    //@SerializedName("Year")
     private int anoLancamento;
     private boolean incluidoNoPlano;
     private double somaDasAvaliacoes;
@@ -12,6 +18,20 @@ public class Titulo implements Comparable<Titulo> {
         this.nome = nome;
         this.anoLancamento = anoLancamento;
     }
+
+    public Titulo(TituloOmdb meuTituloOmdb) {
+        this.nome = meuTituloOmdb.title();
+
+        if (meuTituloOmdb.year().length() > 4){
+            throw  new ErroDeConversaoDeAnoException("Não consegui converter o ano pois o conteúdo informado possui mais que 4 caracteres");
+
+        }
+        // O Integer.valueOf(meuTituloOmdb.year()); converte o conteúdo recebido para um valor
+        this.anoLancamento = Integer.valueOf(meuTituloOmdb.year());
+        //.substring(0,2) É usado para resgatar apenas uma parte da String passada pelo JSON. Neste caso os caracteres 0 até o 2.
+        this.duracaoEmMinutos = Integer.valueOf((meuTituloOmdb.runtime().substring(0,2)));
+    }
+
 
     public int getTotalDeAvaliacoes(){
         return totalDeAvaliacoes;
@@ -69,4 +89,10 @@ public class Titulo implements Comparable<Titulo> {
         return this.getNome().compareTo(outroTitulo.getNome());
     }
 
+    @Override
+    public String toString() {
+        return "(anoLancamento = " + anoLancamento +
+                ", nome = '" + nome +
+                ", Duração= " + duracaoEmMinutos + ")";
+    }
 }
