@@ -1,12 +1,17 @@
 package br.com.eduardo.screenmatch.modelos;
 
-public class Titulo {
+public class Titulo implements Comparable<Titulo> {
     private String nome;
     private int anoLancamento;
     private boolean incluidoNoPlano;
     private double somaDasAvaliacoes;
     private int totalDeAvaliacoes;
     private int duracaoEmMinutos;
+
+    public Titulo(String nome, int anoLancamento) {
+        this.nome = nome;
+        this.anoLancamento = anoLancamento;
+    }
 
     public int getTotalDeAvaliacoes(){
         return totalDeAvaliacoes;
@@ -58,4 +63,10 @@ public class Titulo {
     public double pegaMedia(){
         return somaDasAvaliacoes/totalDeAvaliacoes;
     }
+
+    @Override
+    public int compareTo(Titulo outroTitulo) {
+        return this.getNome().compareTo(outroTitulo.getNome());
+    }
+
 }
